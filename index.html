@@ -879,7 +879,13 @@
                         fecha: formData.fecha,
                         horaInicio: formData.horaInicio || '',
                         horaFin: formData.horaFin || '',
-                        estado: new Date(formData.fecha) >= new Date() ? 'activa' : 'inactiva',
+                        estado: (() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const activityDate = new Date(formData.fecha);
+    activityDate.setHours(0, 0, 0, 0);
+    return activityDate >= today ? 'activa' : 'inactiva';
+})(),
                         inscritos: {},
                         asistencias: {}
                     });
@@ -915,7 +921,13 @@
                         fecha: formData.fecha,
                         horaInicio: formData.horaInicio || '',
                         horaFin: formData.horaFin || '',
-                        estado: new Date(formData.fecha) >= new Date() ? 'activa' : 'inactiva'
+                        estado: (() => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const activityDate = new Date(formData.fecha);
+    activityDate.setHours(0, 0, 0, 0);
+    return activityDate >= today ? 'activa' : 'inactiva';
+})(),
                     });
 
                     setShowModal(false);
