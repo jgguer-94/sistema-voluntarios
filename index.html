@@ -629,15 +629,14 @@
         // FIREBASE CONFIGURATION
         // ==========================================
         const firebaseConfig = {
-  apiKey: "AIzaSyADG5KwGs3Nf8gNFysA-rR1tsSBvmp0qkc",
-  authDomain: "cruz-roja-voluntarios.firebaseapp.com",
-  databaseURL: "https://cruz-roja-voluntarios-default-rtdb.firebaseio.com",
-  projectId: "cruz-roja-voluntarios",
-  storageBucket: "cruz-roja-voluntarios.firebasestorage.app",
-  messagingSenderId: "950792439139",
-  appId: "1:950792439139:web:98f7ec073d99f2b6693f56"
-};
-
+            apiKey: "AIzaSyA0G5kwGs3NrFgphFysa-rR1tsSBvmpQqkc",
+            authDomain: "cruz-roja-voluntarios.firebaseapp.com",
+            databaseURL: "https://cruz-roja-voluntarios-default-rtdb.firebaseio.com",
+            projectId: "cruz-roja-voluntarios",
+            storageBucket: "cruz-roja-voluntarios.firebasestorage.app",
+            messagingSenderId: "950792439139",
+            appId: "1:950792439139:web:987f2c073d99f2b6693f56"
+        };
 
         if (!firebase.apps.length) {
             firebase.initializeApp(firebaseConfig);
@@ -871,6 +870,13 @@
                 }
 
                 try {
+                    // Comparar solo fechas sin hora
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const activityDate = new Date(formData.fecha);
+                    activityDate.setHours(0, 0, 0, 0);
+                    const estadoActividad = activityDate >= today ? 'activa' : 'inactiva';
+
                     const newActivityRef = database.ref('actividades').push();
                     await newActivityRef.set({
                         nombre: formData.nombre,
@@ -879,13 +885,7 @@
                         fecha: formData.fecha,
                         horaInicio: formData.horaInicio || '',
                         horaFin: formData.horaFin || '',
-                        estado: (() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const activityDate = new Date(formData.fecha);
-    activityDate.setHours(0, 0, 0, 0);
-    return activityDate >= today ? 'activa' : 'inactiva';
-})(),
+                        estado: estadoActividad,
                         inscritos: {},
                         asistencias: {}
                     });
@@ -914,6 +914,13 @@
 
             const handleUpdateActivity = async () => {
                 try {
+                    // Comparar solo fechas sin hora
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const activityDate = new Date(formData.fecha);
+                    activityDate.setHours(0, 0, 0, 0);
+                    const estadoActividad = activityDate >= today ? 'activa' : 'inactiva';
+
                     await database.ref(`actividades/${formData.id}`).update({
                         nombre: formData.nombre,
                         descripcion: formData.descripcion,
@@ -921,13 +928,7 @@
                         fecha: formData.fecha,
                         horaInicio: formData.horaInicio || '',
                         horaFin: formData.horaFin || '',
-                        estado: (() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const activityDate = new Date(formData.fecha);
-    activityDate.setHours(0, 0, 0, 0);
-    return activityDate >= today ? 'activa' : 'inactiva';
-})(),
+                        estado: estadoActividad
                     });
 
                     setShowModal(false);
